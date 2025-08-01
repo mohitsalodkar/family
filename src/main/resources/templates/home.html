@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Family</title>
+  
+
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdf6f0;
+      color: #333;
+      line-height: 1.6;
+      transition: margin-left 0.3s ease;
+    }
+
+
+
+
+
+
+    body.sidebar-open {
+      margin-left: 200px;
+    }
+
+ header {
+  background: #e74c3c; /* red background */
+  color: #000;         /* black text */
+  padding: 20px 0;
+  text-align: center;
+  border: 2px solid #000; /* black border */
+}
+
+
+
+    /* Toggle Button */
+    #menu-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    /* Sidebar */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: -220px;
+      width: 200px;
+      height: 100%;
+      background-color: #e74c3c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+
+    #sidebar a {
+      color: white;
+      text-decoration: none;
+      margin: 20px 0;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    #sidebar.active {
+      left: 0;
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .intro {
+      text-align: center;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 20px;
+      padding: 10px;
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card {
+      min-width: 250px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .card .info {
+      padding: 15px;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 40%;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      font-size: 20px;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .left {
+      left: 5px;
+    }
+
+    .right {
+      right: 5px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #f78e69;
+      color: white;
+      margin-top: 40px;
+    }
+
+    .image-card {
+      text-align: center;
+    }
+
+    .image-card h1 {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .image-card p1 {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+
+
+
+
+
+
+<!-- Family Chat Bar (Right Slide-In with Background Red, Text White, Heading Black) -->
+<style>
+  .chat-toggle {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    font-size: 18px;
+    cursor: pointer;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    z-index: 1001;
+    transition: right 0.3s ease;
+  }
+
+  .chat-bar {
+    position: fixed;
+    top: 0;
+    right: -220px;
+    width: 220px;
+    height: 100vh;
+    background-color: #e74c3c; /* red background */
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.4);
+    padding: 20px 12px;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+  }
+
+  .chat-bar.open {
+    right: 0;
+  }
+
+  .chat-bar h3 {
+    font-size: 18px;
+    text-align: center;
+    color: #000; /* black heading */
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .chat-member {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 14px;
+  }
+
+  .chat-member:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .chat-member img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    margin-right: 10px;
+  }
+
+  .chat-member span {
+    font-size: 15px;
+    color: #fff; /* white text */
+    font-weight: 500;
+  }
+</style>
+
+<!-- Toggle Button -->
+<button class="chat-toggle" id="chatToggleBtn">💬</button>
+
+<!-- Chat Bar -->
+<div class="chat-bar" id="chatBar">
+  <h3>Family Chat</h3>
+
+  
+  <div class="chat-member">
+    <img src="https://via.placeholder.com/40?text=👩" alt="Mom">
+    <span>Mom</span>
+  </div>
+  <div class="chat-member">
+    <img src="https://via.placeholder.com/40?text=🧑" alt="Mohit">
+    <span>Mohit</span>
+  </div>
+  <div class="chat-member">
+    <img src="https://via.placeholder.com/40?text=👧" alt="Punnu">
+    <span>Punnu</span>
+  </div>
+  <div class="chat-member">
+    <img src="https://via.placeholder.com/40?text=👶" alt="Guru">
+    <span>Guru</span>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  const chatToggleBtn = document.getElementById('chatToggleBtn');
+  const chatBar = document.getElementById('chatBar');
+
+  chatToggleBtn.addEventListener('click', () => {
+    chatBar.classList.toggle('open');
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body>
+
+<!-- Toggle Button -->
+<button id="menu-toggle">☰ Menu</button>
+
+<!-- Sidebar Navigation -->
+<nav id="sidebar">
+  <a href="/">🏠 Home</a>
+  <a href="gallery">🖼️ Gallery</a>
+  <a href="video">🎥 Video</a>
+  <a href="travel">🧭 travel</a>
+  
+</nav>
+
+<header id="home">
+  <h1>🏡 The Salodkar Family</h1>
+  <p>Together, we make a home full of love & memories</p>
+</header>
+
+<section class="intro">
+  <h2>Welcome to Our Family Website</h2>
+  <p>We are a close-knit family who loves to travel, celebrate together, and create beautiful moments. Here's a glimpse into our life.</p>
+</section>
+
+<section>
+  <h2>🌍 Travel Memories</h2>
+  <div class="carousel-wrapper">
+    <button class="arrow left" onclick="scrollCarousel(-1)">&#10094;</button>
+    <div class="carousel" id="carousel">
+      <div class="card">
+        <img src="shirdi.jpg" alt="shirdi">
+        <div class="info">
+          <h3>Shirdi</h3>
+          <p>March 2024 - Hindu temple</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="shegaon.jpg" alt="Shegaon">
+        <div class="info">
+          <h3>Shegaon</h3>
+          <p>Dec 2023 - Temple</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="mumbai.jpg" alt="Mumbai">
+        <div class="info">
+          <h3>Mumbai</h3>
+          <p>July 2022 - Street food & city life</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="ujjain.jpg" alt="Ujjain">
+        <div class="info">
+          <h3>Ujjain</h3>
+          <p>April 2025 - Hindu temple</p>
+        </div>
+      </div>
+    </div>
+    <button class="arrow right" onclick="scrollCarousel(1)">&#10095;</button>
+  </div>
+</section>
+
+<section id="gallery">
+  <h2>📸 Family Gallery</h2>
+  <div class="gallery">
+    <div class="image-card">
+      <img src="photo.jpg" alt="Jiju">
+      <h1>..Jiju..</h1>
+      <p1>(age-29)</p1>
+    </div>
+    <div class="image-card">
+      <img src="photo2.jpg" alt="Guru">
+      <h1>..Guru..</h1>
+      <p1>(age-1yr)</p1>
+    </div>
+    <div class="image-card">
+      <img src="photo3.jpg" alt="Simba">
+      <h1>..Simba..</h1>
+      <p1>(age-2.5yr)</p1>
+    </div>
+    <div class="image-card">
+      <img src="photo4.jpg" alt="Punnu">
+      <h1>..Punnu..</h1>
+      <p1>(age-20yr)</p1>
+    </div>
+    <div class="image-card">
+      <img src="photo5.jpg" alt="Mohit">
+      <h1>..Mohit..</h1>
+      <p1>(age-19yr)</p1>
+    </div>
+    <div class="image-card">
+      <img src="photo6.jpg" alt="Mummy">
+      <h1>..Mummy..</h1>
+      <p1>(age-45yr)</p1>
+    </div>
+    <div class="image-card">
+      <img src="photo7.jpg" alt="Shraddha">
+      <h1>..Shraddha..</h1>
+      <p1>(29yr)</p1>
+    </div>
+  </div>
+</section>
+
+
+<section id="contact">
+  <h2>📬 Contact Us</h2>
+  <p>Email: salodkarfamily.com</p>
+  <p>Phone: +91-7620925471</p>
+  <p>Phone: +91-9665115240</p>
+</section>
+
+<footer>
+  <p>© 2025 The Salodkar Family. All rights reserved.</p>
+</footer>
+
+<script>
+  function scrollCarousel(direction) {
+    const container = document.getElementById('carousel');
+    const scrollAmount = 300;
+    container.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+  }
+
+  const toggleButton = document.getElementById('menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const body = document.body;
+
+  toggleButton.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    body.classList.toggle('sidebar-open');
+  });
+</script>
+
+</body>
+</html>
+
