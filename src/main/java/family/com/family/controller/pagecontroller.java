@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class pagecontroller {
 	
 	@GetMapping("/")
-	public String home() {
-		return "home";
+	public String index() {
+		return "index";
 	}
 	@GetMapping("/gallery")
 	public String gallery() {
